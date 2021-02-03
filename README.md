@@ -2,7 +2,7 @@
 Simple tool for fast lookup of Octopus Deploy variable sets.
 
 ## Problem
-Quick lookups isn't possible with Octopus Deploy, with this simple GUI it is ;)
+Quick lookups isn't possible with Octopus Deploy, with this simple GUI it is.
 
 ## Setup
 Make sure a HTTP server is serving this script.
@@ -12,4 +12,4 @@ Pass API key and host as URL params.
 
 See: https://octopus.com/docs/octopus-rest-api/how-to-create-an-api-key for obtaining an API Key
 
-Note: this is just a quick and dirty implemation, usage at your own risk
+Note: this is just a quick and dirty implementation, usage at your own risk
