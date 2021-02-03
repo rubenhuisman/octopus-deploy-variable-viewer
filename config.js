@@ -1,4 +1,0 @@
-window.config = {
-  host: "",
-  apiKey: ""
-}

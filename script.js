@@ -1,5 +1,21 @@
-const getApiKey = () => window.config.apiKey;
-const getHost = () => window.config.host;
+const getUrlsParams = () => {  
+  var paramsString = window.location.search.split("?")[1];
+  var paramValues = paramsString.split("&");  
+
+  var params = new Array();    
+
+  paramValues.forEach(param => {
+    var paramValue = param.split("=");
+    params[paramValue[0]] = paramValue[1];
+  });
+
+  return params;
+}
+
+
+const getApiKey = () => getUrlsParams().apiKey;
+const getHost = () => getUrlsParams().host;
+
 const getCurrentVariablesUrl = () => `${getHost()}/api/Spaces-1/variables/${vmBindings.project().VariableSetId}?apikey=${getApiKey()}`;
 const getAllProjects = () => `${getHost()}/api/projects/all?apikey=${getApiKey()}`;
 
