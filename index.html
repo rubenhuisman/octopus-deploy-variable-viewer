@@ -9,7 +9,7 @@
 <body>
     <label>PROJECT:</label>
     <select data-bind="options: availableProjects, optionsText: 'Name', value: project, event:{ change: viewVariables}"></select>
-    <select data-bind="options: enviroments, value: environment, event:{ change: viewVariables}"></select>
+    <select data-bind="options: environments, value: environment, event:{ change: viewVariables}"></select>
     <table data-bind="foreach: variables" class="data-table">
         <tr>
             <td data-bind="text: key"></td>

@@ -57,7 +57,7 @@ const viewVariables = async() => {
 
 
     vmBindings.variables(currentVariables);
-    vmBindings.enviroments(Object.values(environments))
+    vmBindings.environments(Object.values(environments))
 }
 
 const getCurrentVariablesForProject = async() => {
@@ -68,7 +68,7 @@ const getCurrentVariablesForProject = async() => {
 
 function VmProperties() {
     this.availableProjects = ko.observableArray([]);
-    this.enviroments = ko.observableArray([]);
+    this.environments = ko.observableArray([]);
     this.variables = ko.observableArray([]);
     this.project = ko.observable("");
     this.environment = ko.observable("");
