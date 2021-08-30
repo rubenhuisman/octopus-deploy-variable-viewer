@@ -1,21 +1,24 @@
 <!doctype html>
 <html lang="en">
+
 <head>
-  <meta charset="utf-8">
-  <title>Octopus variable overview</title>  
+    <meta charset="utf-8">
+    <title>Octopus variable overview</title>
 </head>
 
 <body>
-  <label>PROJECT:</label>
-  <select data-bind="options: availableProjects, optionsText: 'Name', value: project, event:{ change: viewVariables}"></select>  
-  <table data-bind="foreach: variables" class="data-table">
-    <tr>
-      <td data-bind="text: key"></td>
-      <td data-bind="text: value"></td>
-    </tr>
-  </table>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.5.0/knockout-min.js"></script>  
-  <script src="script.js"></script>
+    <label>PROJECT:</label>
+    <select data-bind="options: availableProjects, optionsText: 'Name', value: project, event:{ change: viewVariables}"></select>
+    <select data-bind="options: enviroments, value: environment, event:{ change: viewVariables}"></select>
+    <table data-bind="foreach: variables" class="data-table">
+        <tr>
+            <td data-bind="text: key"></td>
+            <td data-bind="text: value"></td>
+            <td data-bind="text: enviromentName"></td>
+        </tr>
+    </table>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.5.0/knockout-min.js"></script>
+    <script src="script.js"></script>
 </body>
 
 </html>

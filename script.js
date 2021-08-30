@@ -1,15 +1,15 @@
-const getUrlsParams = () => {  
-  var paramsString = window.location.search.split("?")[1];
-  var paramValues = paramsString.split("&");  
+const getUrlsParams = () => {
+    var paramsString = window.location.search.split("?")[1];
+    var paramValues = paramsString.split("&");
 
-  var params = new Array();    
+    var params = new Array();
 
-  paramValues.forEach(param => {
-    var paramValue = param.split("=");
-    params[paramValue[0]] = paramValue[1];
-  });
+    paramValues.forEach(param => {
+        var paramValue = param.split("=");
+        params[paramValue[0]] = paramValue[1];
+    });
 
-  return params;
+    return params;
 }
 
 
@@ -20,47 +20,60 @@ const getCurrentVariablesUrl = () => `${getHost()}/api/Spaces-1/variables/${vmBi
 const getAllProjects = () => `${getHost()}/api/projects/all?apikey=${getApiKey()}`;
 
 const requestParams = {
-  method: "GET",
-  headers: {
-    accept: "application/json"    
-  }
+    method: "GET",
+    headers: {
+        accept: "application/json",
+        Origin: "x-requested-with"
+    }
 };
 
-const loadProjects = async () => {
-  let response = await fetch(getAllProjects(), requestParams);
+const loadProjects = async() => {
+    let response = await fetch(getAllProjects(), requestParams);
 
-  let projectNames = JSON.parse(await response.text()).map(x => ({
-    Name: x.Name,
-    VariableSetId: x.VariableSetId
-  }));
+    let projectNames = JSON.parse(await response.text()).map(x => ({
+        Name: x.Name,
+        VariableSetId: x.VariableSetId
+    }));
 
-  vmBindings.availableProjects(projectNames);
+    vmBindings.availableProjects(projectNames);
 }
 
 loadProjects();
 
-const viewVariables = async () => {
-  const currentVariablesResponse = await getCurrentVariablesForProject(); 
+const viewVariables = async() => {
+    const currentVariablesResponse = await getCurrentVariablesForProject();
+    const environments = {};
+    currentVariablesResponse.ScopeValues.Environments.forEach(x => {
+        environments[x.Id] = x.Name;
+    });
 
-  const currentVariables = currentVariablesResponse.Variables.map(x => ({
-    key: ko.observable(x.Name),
-    value: ko.observable(`${x.Value}`)
-  }));
+    const currentVariables = currentVariablesResponse.Variables
+        .map(x => ({
+            key: ko.observable(x.Name),
+            value: ko.observable(`${x.Value}`),
+            enviromentName: `(${x.Scope.Environment.map(x => environments[x]).join(", ")})`
+        }))
+        .filter(x => x.enviromentName.includes(vmBindings.environment()));
 
-  vmBindings.variables(currentVariables);
+
+    vmBindings.variables(currentVariables);
+    vmBindings.enviroments(Object.values(environments))
 }
 
-const getCurrentVariablesForProject = async () => {
-  const currentConfig = await fetch(getCurrentVariablesUrl(), requestParams);
+const getCurrentVariablesForProject = async() => {
+    const currentConfig = await fetch(getCurrentVariablesUrl(), requestParams);
 
-  return JSON.parse(await currentConfig.text());
+    return JSON.parse(await currentConfig.text());
 }
 
-function VmProperties() {  
-  this.availableProjects = ko.observableArray([]);
-  this.variables = ko.observableArray([]);
-  this.project = ko.observable("");
-  this.viewVariables = viewVariables;  
+function VmProperties() {
+    this.availableProjects = ko.observableArray([]);
+    this.enviroments = ko.observableArray([]);
+    this.variables = ko.observableArray([]);
+    this.project = ko.observable("");
+    this.environment = ko.observable("");
+
+    this.viewVariables = viewVariables;
 }
 
 let vmBindings = new VmProperties();
