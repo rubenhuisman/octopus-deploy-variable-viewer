@@ -35,7 +35,7 @@ const loadProjects = async() => {
         VariableSetId: x.VariableSetId
     }));
 
-    vmBindings.availableProjects(projectNames);
+    vmBindings.availableProjects(projectNames.sort((a, b) => a.Name.localeCompare(b.Name)));
 }
 
 loadProjects();
